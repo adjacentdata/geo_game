@@ -1,1 +1,1 @@
-# practic
+# GeoSpatial Trivia Game
