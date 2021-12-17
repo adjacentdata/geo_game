@@ -19,7 +19,7 @@ class Answers(models.Model):
 
 class Trivia_Questions(models.Model):
     user_answer = models.ForeignKey(Answers, on_delete=models.CASCADE)
-    trivia_question = models.TextField()
+    trivia_questions = models.TextField(null=True, blank=True)
     correct_answer = models.TextField()
     correct_longitude = models.FloatField(blank=True)
     correct_latitude = models.FloatField(blank=True)
@@ -28,4 +28,8 @@ class Trivia_Questions(models.Model):
         req = requests.get("https://opentdb.com/api.php",params={"amount": 10, "type": "multiple", "category":22})
         req.raise_for_status()
         data = req.json()
-        all_questions = data
+        self.trivia_questions = data[""]
+        self.correct_answer = data["data"]
+        g = geocoder.mapbox(self.correct_answer, key=os.environ.get("MAPBOX_API_KEY"))
+        self.correct_longitude=g.latlng[0]
+        self.correct_latitude=g.latlng[1]
