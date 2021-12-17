@@ -23,3 +23,9 @@ class Trivia_Questions(models.Model):
     correct_answer = models.TextField()
     correct_longitude = models.FloatField(blank=True)
     correct_latitude = models.FloatField(blank=True)
+
+    def question_generator(self, **kwargs):
+        req = requests.get("https://opentdb.com/api.php",params={"amount": 10, "type": "multiple", "category":22})
+        req.raise_for_status()
+        data = req.json()
+        all_questions = data
