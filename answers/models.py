@@ -33,3 +33,4 @@ class Trivia_Questions(models.Model):
         g = geocoder.mapbox(self.correct_answer, key=os.environ.get("MAPBOX_API_KEY"))
         self.correct_longitude=g.latlng[0]
         self.correct_latitude=g.latlng[1]
+        return super(Trivia_Questions, self).question_generator(**kwargs)
