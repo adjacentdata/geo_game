@@ -1,18 +1,20 @@
+from types import coroutine
 from django.db import models
 import geocoder
 import requests
 import os
 
 class Answers(models.Model):
-    user_latitude = models.FloatField(blank=True)
-    user_longitude = models.FloatField(blank=True)
     user_answer = models.TextField()
+    user_latitude = models.FloatField(blank=True, null=True)
+    user_longitude = models.FloatField(blank=True, null=True)
 
-    def answer_return(self, **kwargs):
-        g = geocoder.mapbox(self.user_answer, key=os.environ.get("MAPBOX_API_KEY"))
-        self.user_latitude = g.latlng[0]
-        self.user_longitude = g.latlng[1]
-        return super(Answers, self).answer_return(**kwargs)
+    def save(self, *args, **kwargs):
+        g = geocoder.mapbox(self.user_answer, key=os.environ.get(MAPBOX_API_KEY))
+        coordinates = g.latlng
+        self.user_latitude = coordinates[0]
+        self.user_longitude = coordinates[1]
+        return super(Answers, self).save(*args,**kwargs)
 
 
 class Trivia_Questions(models.Model):
