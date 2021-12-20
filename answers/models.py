@@ -3,8 +3,6 @@ import geocoder
 import requests
 import os
 
-# Create your models here.
-
 class Answers(models.Model):
     user_latitude = models.FloatField(blank=True)
     user_longitude = models.FloatField(blank=True)
