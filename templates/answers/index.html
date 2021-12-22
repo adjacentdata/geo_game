@@ -10,15 +10,176 @@
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css' rel='stylesheet' />
 </head>
 <body>
-    <div id='map' style='width: 400px; height: 300px;'></div>
-    <script>
-    mapboxgl.accessToken = '{{MAPBOX_API_KEY}}';
-    const map = new mapboxgl.Map({
-        container: 'map', // container ID
-        style: 'mapbox://styles/mapbox/streets-v11', // style URL
-        center: [-74.5, 40], // starting position [lng, lat]
-        zoom: 9 // starting zoom
-    });
-    </script>
+    <div class="user-info">Username</div>
+    <div class="account_info">My Account</div>
+    <div class="question" id="question">
+        <h2>In which English county is Stonehenge located?</h2>
+        <div class="score-container">
+            <h3 id="score" class="score">
+                Score: 0
+            </h3>
+        </div>
+    </div>
+    <div id="distance" class="distance-container"></div>
+    <div id='map' style='width: 100%; height: 700px;'></div>
+    <pre id="coordinates" class="coordinates"></pre>
+    <div class="answer">
+        <button id="final_answer" onclick="getScore()">Final Answer</button>
+    </div>
+
+
+<script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+<script>
+	var score = 0
+    mapboxgl.accessToken = 'MAPBOX_API_KEY';
+        const coordinates = document.getElementById('coordinates');
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [0, 0],
+            zoom: -3
+        });
+
+    const distanceContainer = document.getElementById('distance');
+
+    const marker = new mapboxgl.Marker({
+            draggable: true
+        })
+            .setLngLat([0, 0])
+            .addTo(map);
+
+    function onDragEnd() {
+    const lngLat = marker.getLngLat();
+    coordinates.style.display = 'block';
+    coordinates.innerHTML = `Answer: <br />Longitude: ${lngLat.lng}<br />Latitude: ${lngLat.lat}`;
+    }
+    marker.on('dragend', onDragEnd);
+
+    const correct_long = -1.636201416641436;
+    const correct_lat = 51.78469720037877;
+
+    function score_calculation(lat, long, used_time){
+        var linestring = 0
+        html_score = document.getElementById('score')
+        linestring = turf.lineString([[lat,long], [correct_lat, correct_long]])
+        const distance = turf.length(linestring, {units: 'miles'});
+        console.log(distance)
+        score += ((1/Math.sqrt(used_time))+(2/(Math.pow(distance, 2)))*10000)
+        html_score.innerHTML = "Score:" + score.toString()
+        console.log(score)
+    }
+
+    function getScore(){
+        const lngLat = marker.getLngLat();
+        return score_calculation(lngLat.lat, lngLat.lng, 2000)
+    }
+
+    // map.on('load', () => {
+
+
+    //     // Add styles to the map
+    //     map.addLayer({
+    //         id: 'measure-points',
+    //         type: 'circle',
+    //         source: 'geojson',
+    //         paint: {
+    //             'circle-radius': 5,
+    //             'circle-color': '#000'
+    //         },
+    //         filter: ['in', '$type', 'Point']
+    //     });
+    //     map.addLayer({
+    //         id: 'measure-lines',
+    //         type: 'line',
+    //         source: 'geojson',
+    //         layout: {
+    //             'line-cap': 'round',
+    //             'line-join': 'round'
+    //         },
+    //         paint: {
+    //             'line-color': '#000',
+    //             'line-width': 2.5
+    //         },
+    //         filter: ['in', '$type', 'LineString']
+    //     });
+
+
+
+    //     map.on('click', (e) => {
+    //         const features = map.queryRenderedFeatures(e.point, {
+    //             layers: ['measure-points']
+    //         });
+
+
+
+    //         // If a feature was clicked, remove it from the map.
+    //         if (features.length) {
+    //             const id = features[0].properties.id;
+    //             geojson.features = geojson.features.filter(
+    //                 (point) => point.properties.id !== id
+    //             );
+    //         } else {
+    //             const point = {
+    //                 'type': 'Feature',
+    //                 'geometry': {
+    //                     'type': 'Point',
+    //                     'coordinates': [e.lngLat.lng, e.lngLat.lat]
+    //                 },
+    //                 'properties': {
+    //                     'id': String(new Date().getTime())
+    //                 }
+    //             };
+
+    //             geojson.features.push(point);
+    //         }
+
+    //         if (geojson.features.length > 1) {
+    //             linestring.geometry.coordinates = geojson.features.map(
+    //                 (point) => point.geometry.coordinates
+    //             );
+
+    //             geojson.features.push(linestring);
+
+    //             // Populate the distanceContainer with total distance
+    //             const value = document.createElement('pre');
+    //             const distance = turf.length(linestring);
+    //             value.textContent = `Total distance: ${distance.toLocaleString()}km`;
+    //             distanceContainer.appendChild(value);
+    //         }
+
+    //         map.getSource('geojson').setData(geojson);
+    //     });
+    // });
+
+    // map.on('mousemove', (e) => {
+    //     const features = map.queryRenderedFeatures(e.point, {
+    //         layers: ['measure-points']
+    //     });
+    //     // Change the cursor to a pointer when hovering over a point on the map.
+    //     // Otherwise cursor is a crosshair.
+    //     map.getCanvas().style.cursor = features.length
+    //         ? 'pointer'
+    //         : 'crosshair';
+    // });
+</script>
+
+</body>
+</html>
+
+
+<script>
+
+
+        // var score = 0
+        // function getQuestion(){
+        //     // Retrieve random question from database to store in the front end
+        // }
+
+</script>
+    <script type="text/javascript" src="index.js"></script>
+
+
+    </body>
+    </html>
 </body>
 </html>

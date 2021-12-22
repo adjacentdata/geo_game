@@ -63,15 +63,12 @@ questions = [
 ]
 
 class Answers(models.Model):
-    user_answer = models.TextField()
     user_latitude = models.FloatField(blank=True, null=True)
     user_longitude = models.FloatField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        g = geocoder.mapbox(self.user_answer, key=os.environ.get("MAPBOX_API_KEY"))
-        coordinates = g.latlng
-        self.user_latitude = coordinates[0]
-        self.user_longitude = coordinates[1]
+        self.user_latitude = self.user_latitude
+        self.user_longitude = self.user_longitude
         return super(Answers, self).save(*args,**kwargs)
 
 

@@ -5,6 +5,6 @@ from answers.models import Answers
 
 class AnswersView(CreateView):
     model = Answers
-    fields = ['user_answer']
+    fields = ['user_latitude', 'user_longitude']
     template_name = 'answers/index.html'
     success_url = '/'
