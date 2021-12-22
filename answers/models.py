@@ -37,7 +37,7 @@ questions = [
       "category": "Geography",
       "type": "multiple",
       "difficulty": "easy",
-      "question": "What is the name of the peninsula containing Spain and Portugal?",
+      "question": "What is the location of the peninsula containing Spain and Portugal?",
       "correct_answer": "Iberian Peninsula",
       "lat": 40.61650098153299,
       "long": -4.098477881100619
