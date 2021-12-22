@@ -6,5 +6,5 @@ from answers.models import Answers
 class AnswersView(CreateView):
     model = Answers
     fields = ['user_answer']
-    template = 'home.html'
+    template_name = 'answers/index.html'
     success_url = '/'
