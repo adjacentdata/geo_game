@@ -17,5 +17,8 @@ class Account(AbstractBaseUser):
 
     REQUIRED_FIELDS = ['user_name', 'first_name', 'email']
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.email
+
+    def has_perm (self, perm):
+        return self.user_admin
