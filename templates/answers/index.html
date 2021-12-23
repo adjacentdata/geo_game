@@ -30,49 +30,67 @@
 
 <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
 <script>
-	var score = 0
-    mapboxgl.accessToken = 'MAPBOX_API_KEY';
-        const coordinates = document.getElementById('coordinates');
-        const map = new mapboxgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v11',
-            center: [0, 0],
-            zoom: -3
-        });
+	var final_score = 0
+    var score = 0
+    //Post command
 
-    const distanceContainer = document.getElementById('distance');
+    $(document).ready(function() {
+        function onchange (e) {
+            final_score = score
+            $.ajax({
+                url: '/update_score',
+                data: {'score': score},
+                type: 'POST'
+            }).done(function(response){
+                console.log(response)
+            })
+        };
+    });
 
-    const marker = new mapboxgl.Marker({
-            draggable: true
-        })
-            .setLngLat([0, 0])
-            .addTo(map);
 
-    function onDragEnd() {
-    const lngLat = marker.getLngLat();
-    coordinates.style.display = 'block';
-    coordinates.innerHTML = `Answer: <br />Longitude: ${lngLat.lng}<br />Latitude: ${lngLat.lat}`;
-    }
-    marker.on('dragend', onDragEnd);
 
-    const correct_long = -1.636201416641436;
-    const correct_lat = 51.78469720037877;
+    // mapboxgl.accessToken = 'MAPBOX_API_KEY';
+    //     const coordinates = document.getElementById('coordinates');
+    //     const map = new mapboxgl.Map({
+    //         container: 'map',
+    //         style: 'mapbox://styles/mapbox/streets-v11',
+    //         center: [0, 0],
+    //         zoom: -3
+    //     });
 
-    function score_calculation(lat, long, used_time){
-        var linestring = 0
-        html_score = document.getElementById('score')
-        linestring = turf.lineString([[lat,long], [correct_lat, correct_long]])
-        const distance = turf.length(linestring, {units: 'miles'});
-        console.log(distance)
-        score += ((1/Math.sqrt(used_time))+(2/(Math.pow(distance, 2)))*10000)
-        html_score.innerHTML = "Score:" + score.toString()
-        console.log(score)
-    }
+    // const distanceContainer = document.getElementById('distance');
 
-    function getScore(){
-        const lngLat = marker.getLngLat();
-        return score_calculation(lngLat.lat, lngLat.lng, 2000)
-    }
+    // const marker = new mapboxgl.Marker({
+    //         draggable: true
+    //     })
+    //         .setLngLat([0, 0])
+    //         .addTo(map);
+
+    // function onDragEnd() {
+    // const lngLat = marker.getLngLat();
+    // coordinates.style.display = 'block';
+    // coordinates.innerHTML = `Answer: <br />Longitude: ${lngLat.lng}<br />Latitude: ${lngLat.lat}`;
+    // }
+    // marker.on('dragend', onDragEnd);
+
+    // const correct_long = -1.636201416641436;
+    // const correct_lat = 51.78469720037877;
+
+    // function score_calculation(lat, long, used_time){
+    //     var linestring = 0
+    //     html_score = document.getElementById('score')
+    //     linestring = turf.lineString([[lat,long], [correct_lat, correct_long]])
+    //     const distance = turf.length(linestring, {units: 'miles'});
+    //     console.log(distance)
+    //     score += ((1/Math.sqrt(used_time))+(2/(Math.pow(distance, 2)))*10000)
+    //     html_score.innerHTML = "Score:" + score.toString()
+    //     console.log(score)
+    // }
+
+    // function getScore(){
+    //     const lngLat = marker.getLngLat();
+    //     return score_calculation(lngLat.lat, lngLat.lng, 2000)
+    // }
 
     // map.on('load', () => {
 
