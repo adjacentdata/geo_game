@@ -22,3 +22,19 @@ class Account(AbstractBaseUser):
 
     def has_perm (self, perm):
         return self.user_admin
+
+class AccountManager(BaseUserManager):
+    def create_player(self, first_name, username, email,password=None):
+        if not email:
+            raise ValueError("User must have an email address")
+        if not username:
+            raise ValueError("User must have a username")
+        player = self.model(
+            email = self.normalize_email(email),
+            username=username,
+            first_name = first_name
+        )
+
+        player.set_password(password)
+        player.save(using=self._db)
+        return player
