@@ -91,3 +91,5 @@ db.sqlite3
 
 ### Static ###
 /static/admin
+
+/map_game/settings.py
