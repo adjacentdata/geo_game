@@ -77,12 +77,21 @@
     // const correct_lat = 51.78469720037877;
 
     function score_calculation(lat, long, used_time){
-        var linestring = 0
-        html_score = document.getElementById('score')
-        linestring = turf.lineString([[lat,long], [correct_lat, correct_long]])
+        var linestring = 0;
+        html_score = document.getElementById('score');
+        linestring = turf.lineString([[lat,long], [correct_lat, correct_long]]);
         const distance = turf.length(linestring, {units: 'miles'});
-        console.log(distance)
-        score += ((1/Math.sqrt(used_time))+(2/(Math.pow(distance, 2)))*10000)
+        console.log(distance);
+        calculation = score += ((1/Math.sqrt(used_time))+(2/(Math.pow(distance, 2)))*10000)
+        if (distance < 10) {
+            score += 100 * calculation;
+        }else if (distance < 100) {
+            score += 10 * calculation;
+        }else if (distance > 2000) {
+            score += .5 * calculation;
+        }else {
+            score += calculation;
+        }
         html_score.innerHTML = "Score:" + score.toString()
         console.log(score)
     }
