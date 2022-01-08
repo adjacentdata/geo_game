@@ -1,3 +1,4 @@
+{%load static%}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +14,7 @@
     <div class="user-info">Username</div>
     <div class="account_info">My Account</div>
     <div class="question" id="question">
-        <h2>In which English county is Stonehenge located?</h2>
+        <h2>{{context.trivia_questions}}</h2>
         <div class="score-container">
             <h3 id="score" class="score">
                 Score: 0
@@ -32,6 +33,10 @@
 <script>
 	var final_score = 0
     var score = 0
+    var questions = ""
+
+    //Retrieve data from backend!
+
     //HTTP Post Command to move score to the backend
 
     // $(document).ready(function() {
