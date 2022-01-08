@@ -1,14 +1,15 @@
 from django.shortcuts import render
 from django.views.generic.edit import CreateView
 from django.http import HttpResponse
-from answers.models import Answers
+from answers.models import Trivia_Questions
+import random
 # Create your views here.
 
-class AnswersView(CreateView):
-    model = Answers
-    fields = ['user_latitude', 'user_longitude']
-    template_name = 'answers/index.html'
-    success_url = '/'
+
+def question(request):
+    random_int = random.randint(0, 1)
+    context = Trivia_Questions.objects.values()[random_int]
+    return render(request, 'answers/index.html', {"context" : context})
 
 def update_score (request):
     if request.method == 'POST':
