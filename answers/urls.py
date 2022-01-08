@@ -1,7 +1,8 @@
 from django.urls import path, include
 from django.urls import path
-from .views import AnswersView
+from . import views
+from .views import question
 
 urlpatterns = [
-    path('', AnswersView.as_view(), name='home'),
+    path('', views.question, name='home'),
 ]
